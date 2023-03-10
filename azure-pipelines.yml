@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: S3Upload@1
+  inputs:
+    awsCredentials: 'AWS-SERVICE'
+    regionName: 'us-east-1'
+    bucketName: 'mybuckets3-primer-reto'
+    sourceFolder: './'
+    globExpressions: '**'
+- task: AWSCLI@1
+  inputs:
+    awsCredentials: 'AWS-SERVICE'
+    regionName: 'us-east-1'
+    awsCommand: 'cloudfront'
+    awsSubCommand: 'create-invalidation'
+    awsArguments: '--distribution-id E1F1YO5PUFR8GD --paths /*'
