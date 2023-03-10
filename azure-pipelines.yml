@@ -12,14 +12,14 @@ pool:
 steps:
 - task: S3Upload@1
   inputs:
-    awsCredentials: 'AWS'
+    awsCredentials: 'AWS-SERVICE'
     regionName: 'us-east-1'
     bucketName: 'mybuckets3-primer-reto'
     sourceFolder: './'
     globExpressions: '**'
 - task: AWSCLI@1
   inputs:
-    awsCredentials: 'AWS'
+    awsCredentials: 'AWS-SERVICE'
     regionName: 'us-east-1'
     awsCommand: 'cloudfront'
     awsSubCommand: 'create-invalidation'
