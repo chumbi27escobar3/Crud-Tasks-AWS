@@ -23,4 +23,4 @@ steps:
     regionName: 'us-east-1'
     awsCommand: 'cloudfront'
     awsSubCommand: 'create-invalidation'
-    awsArguments: '--distribution-id E1F1YO5PUFR8GD --paths /*'
+    awsArguments: '--distribution-id E4OKICSH9TDDQ --paths /*'
