@@ -27,11 +27,11 @@ stages:
           inputs:
             SourceFolder: '$(Build.SourcesDirectory)'
             Contents: 'build/**'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)/build'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
              
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)/build'
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'build'
             publishLocation: 'Container'
 
@@ -46,7 +46,7 @@ stages:
             awsCredentials: 'AWS-SERVICE'
             regionName: 'us-east-1'
             bucketName: 'mybuckets3-primer-reto'
-            sourceFolder: '$(Pipeline.Workspace)/build/build/'
+            sourceFolder: '$(Pipeline.Workspace)/build/'
             globExpressions: '**'
         - task: AWSCLI@1
           inputs:
