@@ -8,19 +8,50 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+  
+stages:
+  - stage: build
+    jobs: 
+    - job: build
+      steps:
+        - task: NodeTool@0
+          inputs:
+            versionSource: 'spec'
+            versionSpec: '18.x'
+        - task: Npm@1
+          inputs:
+            command: 'install'
+        - script: |
+            npm run-script build
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(Build.SourcesDirectory)'
+            Contents: 'build/**'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)/build'
+             
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)/build'
+            ArtifactName: 'build'
+            publishLocation: 'Container'
 
-steps:
-- task: S3Upload@1
-  inputs:
-    awsCredentials: 'AWS-SERVICE'
-    regionName: 'us-east-1'
-    bucketName: 'mybuckets3-primer-reto'
-    sourceFolder: './'
-    globExpressions: '**'
-- task: AWSCLI@1
-  inputs:
-    awsCredentials: 'AWS-SERVICE'
-    regionName: 'us-east-1'
-    awsCommand: 'cloudfront'
-    awsSubCommand: 'create-invalidation'
-    awsArguments: '--distribution-id E4OKICSH9TDDQ --paths /*'
+  - stage: deploy
+    jobs:
+    - job: deploy   
+      steps: 
+        - download: current
+          artifact: build
+        - task: S3Upload@1
+          inputs:
+            awsCredentials: 'AWS-SERVICE'
+            regionName: 'us-east-1'
+            bucketName: 'mybuckets3-primer-reto'
+            sourceFolder: './'
+            globExpressions: '**'
+        - task: AWSCLI@1
+          inputs:
+            awsCredentials: 'AWS-SERVICE'
+            regionName: 'us-east-1'
+            awsCommand: 'cloudfront'
+            awsSubCommand: 'create-invalidation'
+            awsArguments: '--distribution-id E4OKICSH9TDDQ --paths /*' 
