@@ -53,7 +53,7 @@ stages:
             awsCredentials: 'AWS-SERVICE'
             regionName: 'us-east-1'
             bucketName: 'mybuckets3-primer-reto'
-            sourceFolder: '$(Pipeline.Workspace)/build/'
+            sourceFolder: '$(Pipeline.Workspace)/build/build/'
             globExpressions: '**'
         - task: AWSCLI@1
           inputs:
