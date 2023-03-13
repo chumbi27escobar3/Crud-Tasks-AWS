@@ -1,7 +1,7 @@
 import { Note } from "../../interfaces/Interfaces";
 import makeRequest from "../Service";
 
-const URL = "https://eata32s2wg.execute-api.us-east-1.amazonaws.com/items";
+const URL = "https://rxz1xntvzf.execute-api.us-east-1.amazonaws.com/items";
 
 const GetAll = () => {
   return makeRequest(URL, 'GET');
